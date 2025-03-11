@@ -4,6 +4,8 @@ $pdo = new PDO("mysql:host=localhost;dbname=signage_db;charset=utf8", "root", ""
 
 // ดึงข้อมูลไฟล์ทั้งหมดจากฐานข้อมูล
 $files = $pdo->query("SELECT * FROM media_files ORDER BY id ASC")->fetchAll(PDO::FETCH_ASSOC);
+$last_id = $pdo->query("SELECT MAX(id) AS max_id FROM media_files")->fetchAll(PDO::FETCH_ASSOC)[0]['max_id'];
+$fileLength = $pdo->query("SELECT * FROM media_files ORDER BY id ASC")->rowCount();
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +28,8 @@ $files = $pdo->query("SELECT * FROM media_files ORDER BY id ASC")->fetchAll(PDO:
 
     <script>
         let mediaList = <?php echo json_encode($files); ?>;
+        let lastId = "<?php echo $last_id; ?>";
+        let itemsLength = "<?php echo $fileLength; ?>";
         let currentIndex = 0;
 
         function showMedia() {
@@ -58,13 +62,12 @@ $files = $pdo->query("SELECT * FROM media_files ORDER BY id ASC")->fetchAll(PDO:
         function updateMediaList() {
             $.ajax({
                 url: "fetch_files.php",
-                method: "GET",
-                dataType: "json",
+                method: "POST",
+                data: { lastId: lastId },
+                dataType: "JSON",
                 success: function(data) {
-                    if (JSON.stringify(data) !== JSON.stringify(mediaList)) {
-                        mediaList = data;
-                        currentIndex = 0; // รีเซ็ตไปที่ไฟล์แรก
-                        showMedia();
+                    if (lastId != data.new_id || itemsLength != data.length) {
+                        location.reload();
                     }
                 }
             });
