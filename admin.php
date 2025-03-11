@@ -29,7 +29,7 @@ $files = $pdo->query("SELECT * FROM media_files ORDER BY id DESC")->fetchAll(PDO
 <html>
 <head>
     <title>Admin - Digital Signage</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/plugins/bootstrap-5.3.3-dist/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container mt-4">

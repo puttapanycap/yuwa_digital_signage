@@ -10,8 +10,8 @@ $files = $pdo->query("SELECT * FROM media_files ORDER BY id ASC")->fetchAll(PDO:
 <html>
 <head>
     <title>Digital Signage</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="./assets/plugins/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <script src="./assets/plugins/jquery-3.7.1/jquery-3.7.1.min.js"></script>
     <style>
         body { margin: 0; overflow: hidden; background: black; }
         #signage-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -55,8 +55,24 @@ $files = $pdo->query("SELECT * FROM media_files ORDER BY id ASC")->fetchAll(PDO:
             showMedia();
         }
 
+        function updateMediaList() {
+            $.ajax({
+                url: "fetch_files.php",
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    if (JSON.stringify(data) !== JSON.stringify(mediaList)) {
+                        mediaList = data;
+                        currentIndex = 0; // รีเซ็ตไปที่ไฟล์แรก
+                        showMedia();
+                    }
+                }
+            });
+        }
+
         $(document).ready(function() {
             showMedia();
+            setInterval(updateMediaList, 5000); // เช็คอัปเดตทุก 10 วินาที
         });
     </script>
 </body>
