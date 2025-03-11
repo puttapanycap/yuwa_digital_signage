@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS signage_db;
+USE signage_db;
+
+CREATE TABLE IF NOT EXISTS media_files (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    file_name VARCHAR(255) NOT NULL,
+    file_type VARCHAR(10) NOT NULL,
+    duration INT NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
