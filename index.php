@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Bangkok");
 // เชื่อมต่อฐานข้อมูล
 $pdo = new PDO("mysql:host=localhost;dbname=signage_db;charset=utf8", "root", "");
 
